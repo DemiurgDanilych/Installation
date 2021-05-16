@@ -3,71 +3,59 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Main {
+	private static StringBuilder log = new StringBuilder();
+
 	public static void main(String[] args) {
-		
-		StringBuilder log = new StringBuilder();
-		
-		
-		File src = new File("C:\\Games\\src");
-		if (src.mkdir()) log.append("Каталог src - создан.").append("\n");
-		
-		File res = new File("C:\\Games\\res");
-		if (res.mkdir()) log.append("Каталог res - создан.").append("\n");
-		
-		File savegames = new File("C:\\Games\\savegames");
-		if (savegames.mkdir()) log.append("Каталог savegames - создан.").append("\n");
-		
-		File temp = new File("C:\\Games\\temp");
-		if (temp.mkdir()) log.append("Каталог temp - создан.").append("\n");
-		
-		
-		
-		File main = new File(src,"main");
-		if (main.mkdir()) log.append("Файл src\\main - создан.").append("\n");
-		
-		File test = new File(src,"test");
-		if (test.mkdir()) log.append("Файл src\\test - создан.").append("\n");
-		
-		
-		
-		File mainJava = new File(main,"Main.java");
-		try{
-			if (mainJava.createNewFile())
-				log.append("Файл main\\Main.Java - создан.").append("\n");
+
+		createOfMainCatalogs();
+		creatingSubdirectories();
+		fileCreation();
+		writeToTheTemp();
+	}
+
+	private static void createOfMainCatalogs(){
+		createDir("\\Games\\","src");
+		createDir("\\Games\\","res");
+		createDir("\\Games\\","savegames");
+		createDir("\\Games\\","temp");
+	}
+
+	private static void creatingSubdirectories(){
+		createDir("\\Games\\src\\","main");
+		createDir("\\Games\\src\\","test");
+
+		createDir("\\Games\\res\\","drawabels");
+		createDir("\\Games\\res\\","vectors");
+		createDir("\\Games\\res\\","icons");
+	}
+
+	private static void fileCreation(){
+		createFile("\\Games\\src\\main\\","Main.java");
+		createFile("\\Games\\src\\main\\","Utils.java");
+		createFile("\\Games\\temp\\","temp.txt");
+	}
+
+
+
+	private static void createDir(String path,String name){
+		File dir = new File(path + name);
+		if (dir.mkdir())
+			log.append("Каталог " + path + name + " - создан.").append("\n");
+	}
+
+
+	private static void  createFile(String path, String name){
+		File file = new File(path, name);
+		try {
+			if (file.createNewFile())
+				log.append("Файл " + path + name + " - создан.").append("\n");
 		} catch (IOException ex) {
 			System.out.println(ex.getMessage());
 		}
-		
-		File utilsJava = new File(main,"Utils.java");
-		try {
-			if (utilsJava.createNewFile())
-				log.append("Файл main\\Utils.java - создан.").append("\n");
-		} catch (IOException ex) {
-			System.out.println(ex.getMessage());
-		}
-		
-		
-		
-		File drawabels = new File(res,"drawabels");
-		if (drawabels.mkdir()) log.append("Каталог res\\drawabels - создан.").append("\n");
-		
-		File vectors = new File(res,"vectors");
-		if (vectors.mkdir()) log.append("Каталог res\\vectors - создан.").append("\n");
-		
-		File icons = new File(res,"icons");
-		if (icons.mkdir()) log.append("Каталог res\\icons - создан.").append("\n");
-		
-		
-		File tempTXT = new File(temp, "temp.txt");
-		try {
-			if (tempTXT.createNewFile())
-				log.append("Файл temp\\temp.txt - создан.").append("\n");
-		}catch (IOException ex){
-			System.out.println(ex.getMessage());
-		}
-		
-		
-		try (FileWriter writer = new FileWriter(tempTXT, false)){
+	}
+
+	private static void writeToTheTemp (){
+		try (FileWriter writer = new FileWriter("\\Games\\temp\\temp.txt", false)){
 			writer.write(log.toString());
 		}catch (IOException ex) {
 			System.out.println(ex.getMessage());
